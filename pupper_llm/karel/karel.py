@@ -216,9 +216,6 @@ class KarelPupper:
         # Be creative and choreograph the most exciting dance possible!
         self.wiggle()
         self.turn_left()
-        self.turn_left()
-        self.turn_left()
-        self.turn_right()
         self.turn_right()
         self.bob()
         self.stop()
