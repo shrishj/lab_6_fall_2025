@@ -97,13 +97,17 @@ class KarelPupper:
         move_cmd = Twist()
         move_cmd.angular.z = 0.0
 
-        single_bob_duration = 0.2
-        linear_speed = 0.5
+        # Use gentler parameters and add a slight lateral counter-sway to keep balance
+        single_bob_duration = 0.3
+        linear_speed = 0.2
+        lateral_sway = 0.1
 
         start_time = time.time()
         direction = 1
         while time.time() - start_time < bob_time:
             move_cmd.linear.x = direction * linear_speed
+            # Counter-sway sideways to keep legs in phase and center of mass over support
+            move_cmd.linear.y = -direction * lateral_sway
             self.publisher.publish(move_cmd)
             rclpy.spin_once(self.node, timeout_sec=0.01)
             time.sleep(single_bob_duration)
