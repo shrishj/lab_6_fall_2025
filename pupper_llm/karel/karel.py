@@ -96,20 +96,14 @@ class KarelPupper:
 
         move_cmd = Twist()
         move_cmd.angular.z = 0.0
-
-        # Use gentler parameters and add a slight lateral counter-sway to keep balance
         single_bob_duration = 0.3
-        linear_speed = 0.2
-        lateral_sway = 0.1
 
         start_time = time.time()
         direction = 1
         while time.time() - start_time < bob_time:
-            move_cmd.linear.x = direction * linear_speed
-            # Counter-sway sideways to keep legs in phase and center of mass over support
-            move_cmd.linear.y = -direction * lateral_sway
+            move_cmd.linear.x = direction * 0.2
+            move_cmd.linear.y = -direction * 0.1
             self.publisher.publish(move_cmd)
-            rclpy.spin_once(self.node, timeout_sec=0.01)
             time.sleep(single_bob_duration)
             direction *= -1
 
@@ -174,12 +168,9 @@ class KarelPupper:
         - Use move() or build your own move_cmd.
         """
         move_cmd = Twist()
-        move_cmd.linear.x = 0.0
-        angular_speed = 0.8 
-        direction = 0.5 * math.pi / 0.8
-        move_cmd.angular.z = direction * angular_speed
+        move_cmd.angular.z = 1.5
         self.publisher.publish(move_cmd)
-        rclpy.spin_once(self.node, timeout_sec=0.01)
+        rclpy.spin_once(self.node, timeout_sec=1)
         self.stop()
 
     def turn_right(self):
@@ -189,11 +180,7 @@ class KarelPupper:
         - Use move() or make your own Twist message.
         """
         move_cmd = Twist()
-        move_cmd.linear.x = 0.0
-        angular_speed = 0.8
-        
-        direction = -0.5 * math.pi / 0.8
-        move_cmd.angular.z = direction * angular_speed
+        move_cmd.angular.z = -1.5
         self.publisher.publish(move_cmd)
         rclpy.spin_once(self.node, timeout_sec=0.01)  
         self.stop()
